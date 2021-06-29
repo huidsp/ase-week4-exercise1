@@ -39,19 +39,36 @@ func (b *Board) print() {
 	}
 }
 
-func (b *Board) input() {
-	fmt.Print("(x,y): ")
-	scanner := bufio.NewScanner(os.Stdin)
-	scanner.Scan()
-	in := scanner.Text()
-	if x, err := strconv.Atoi(in[0:1]); err == nil {
-		if y, err := strconv.Atoi(in[2:3]); err == nil {
-			b.put(x, y, "x")
+func (b *Board) input(p string) {
+	for {
+		if p == "o" {
+			fmt.Print("Player 1: Input (x,y) ")
 		} else {
-			panic(in)
+			fmt.Print("Player 2: Input (x,y) ")
 		}
-	} else {
-		panic(in)
+		scanner := bufio.NewScanner(os.Stdin)
+		scanner.Scan()
+		in := scanner.Text()
+		if len(in) != 3 {
+			continue
+		}
+		var x, y int
+		if tmp, err := strconv.Atoi(in[0:1]); err == nil {
+			x = tmp
+		} else {
+			continue
+		}
+		if tmp, err := strconv.Atoi(in[2:3]); err == nil {
+			y = tmp
+		} else {
+			continue
+		}
+		if b.get(x, y) == "" {
+			b.put(x, y, p)
+			break
+		} else {
+			continue
+		}
 	}
 }
 
@@ -121,6 +138,24 @@ func (b *Board) check() string {
 
 func main() {
 	b := NewBoard()
-	b.input()
-	b.print()
+	player := "o"
+	for {
+		b.input(player)
+		b.print()
+		if result := b.check(); result != "" {
+			if result == "o" {
+				fmt.Println("Player 1 wins")
+			} else if result == "x" {
+				fmt.Println("Player 2 wins")
+			} else {
+				fmt.Println("Draw")
+			}
+			break
+		}
+		if player == "o" {
+			player = "x"
+		} else {
+			player = "o"
+		}
+	}
 }
