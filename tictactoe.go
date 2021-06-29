@@ -55,6 +55,70 @@ func (b *Board) input() {
 	}
 }
 
+func (b *Board) check_o1(x string) string {
+	for i := 0; i < 3; i++ {
+		if b.get(i, i) != x {
+			return ""
+		}
+	}
+	return x
+}
+
+func (b *Board) check_o2(x string) string {
+	for i := 0; i < 3; i++ {
+		if b.get(i, 2-i) != x {
+			return ""
+		}
+	}
+	return x
+}
+
+func (b *Board) check_o3(j int, x string) string {
+	for i := 0; i < 3; i++ {
+		if b.get(i, j) != x {
+			return ""
+		}
+	}
+	return x
+}
+
+func (b *Board) check_o4(j int, x string) string {
+	for i := 0; i < 3; i++ {
+		if b.get(j, i) != x {
+			return ""
+		}
+	}
+	return x
+}
+
+func (b *Board) check_o5() string {
+	for i := 0; i < 3; i++ {
+		for j := 0; j < 3; j++ {
+			if b.get(j, i) == "" {
+				return ""
+			}
+		}
+	}
+	return "d"
+}
+
+func (b *Board) check() string {
+	for _, x := range []string{"o", "x"} {
+		if b.check_o1(x) == x || b.check_o2(x) == x {
+			return x
+		}
+		for j := 0; j < 3; j++ {
+			if b.check_o3(j, x) == x {
+				return x
+			}
+			if b.check_o4(j, x) == x {
+				return x
+			}
+		}
+	}
+	return b.check_o5()
+}
+
 func main() {
 	b := NewBoard()
 	b.input()
