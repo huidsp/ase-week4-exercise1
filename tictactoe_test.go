@@ -71,3 +71,13 @@ func TestPut07(t *testing.T) {
 	b.put(1, 0, "x")
 	b.print()
 }
+
+func TestPut08(t *testing.T) {
+	b := NewBoard()
+	fmt.Println("expected:")
+	fmt.Println("...")
+	fmt.Println("x..")
+	fmt.Println("...")
+	b.input()
+	b.print()
+}
